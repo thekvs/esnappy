@@ -1,0 +1,14 @@
+{application, esnappy,
+ [
+  {description, "Erlang bindings to Google's Snappy compression library"},
+  {vsn, "1.0"},
+  {modules, [
+             esnappy
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
