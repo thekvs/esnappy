@@ -3,7 +3,7 @@
 The **esnappy** library provides Erlang bindings to Google's
 [Snappy compression library](http://code.google.com/p/snappy/).
 It uses separate thread for compression/decompression so it won't
-screw up Erlang's VM scheduler while processing large binaries.
+screw up Erlang's VM scheduler while processing large data chunks.
 Code of the Snappy library included in this distribution.
 
 ## Erlang Version
