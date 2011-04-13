@@ -10,6 +10,17 @@ Code of the Snappy library included in this distribution.
 
 The **esnappy** library requires Erlang R14B or later.
 
+## Building
+
+You have to have Snappy library installed on your system so that
+compiler can link against it. You can also specify **ESNAPPY_INCLUDE_DIR**
+and **ESNAPPY_LIB_DIR** enviroment variables for better control of
+paths used to compile and link **esnappy** library.
+
+<pre>
+$ ESNAPPY_INCLUDE_DIR=/usr/local/include ESNAPPY_LIB_DIR=/usr/local/lib ./rebar compile
+</pre>
+
 ## Perfomance
 
 <pre>
@@ -39,3 +50,5 @@ true
 8> size(ZCompressed).
 832898
 </pre>
+
+Note the difference in execution time 46692 (Snappy) vs. 493585 (zlib).
