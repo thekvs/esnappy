@@ -2,7 +2,7 @@
 
 The **esnappy** library provides Erlang bindings to Google's
 [Snappy compression library](http://code.google.com/p/snappy/).
-It uses separate thread for compression/decompression so it won't
+It uses separate OS thread for compression/decompression so it won't
 screw up Erlang's VM scheduler while processing large data chunks.
 
 ## Erlang Version
@@ -50,4 +50,4 @@ true
 832898
 </pre>
 
-Note the difference in execution time 46692 (Snappy) vs. 493585 (zlib).
+Note the difference in execution time **46692** (Snappy) vs. **493585** (zlib).

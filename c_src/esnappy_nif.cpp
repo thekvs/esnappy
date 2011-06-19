@@ -151,7 +151,7 @@ init_task(task_type_t type, ERL_NIF_TERM ref, ErlNifPid pid,
 
     term = enif_make_copy(task->env, orig_term);
 
-    if (!enif_inspect_binary(task->env, term, &task->data)) {
+    if (!enif_inspect_iolist_as_binary(task->env, term, &task->data)) {
         cleanup_task(&task);
         goto done;
     }
@@ -370,9 +370,10 @@ snappy_compress_impl(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
                 ERL_NIF_LATIN1));
     }
 
-    if (!enif_is_binary(env, argv[3])) {
+    if (!(enif_is_binary(env, argv[3]) ||
+          enif_is_list(env, argv[3]))) {
         return enif_make_tuple2(env, atom_error,
-            enif_make_string(env, "Forth arg. is not a binary",
+            enif_make_string(env, "Forth arg. is not a binary or a list",
                 ERL_NIF_LATIN1));
     }
 
@@ -418,7 +419,8 @@ snappy_decompress_impl(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
                 ERL_NIF_LATIN1));
     }
 
-    if (!enif_is_binary(env, argv[3])) {
+    if (!(enif_is_binary(env, argv[3]) ||
+          enif_is_list(env, argv[3]))) {
         return enif_make_tuple2(env, atom_error,
             enif_make_string(env, "Forth arg. is not a binary",
                 ERL_NIF_LATIN1));

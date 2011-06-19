@@ -25,18 +25,18 @@ init() ->
                            end, atom_to_list(?MODULE) ++ "_nif"),
     erlang:load_nif(SoName, 0).
 
-compress_impl(_Ctx, _Ref, _Self, _Data) ->
+compress_impl(_Ctx, _Ref, _Self, _IoList) ->
     erlang:nif_error(not_loaded).
 
-decompress_impl(_Ctx, _Ref, _Self, _Data) ->
+decompress_impl(_Ctx, _Ref, _Self, _IoList) ->
     erlang:nif_error(not_loaded).
 
 create_ctx() ->
     erlang:nif_error(not_loaded).
 
-compress(Ctx, UncompressedData) ->
+compress(Ctx, RawData) ->
     Ref = make_ref(),
-    ok = compress_impl(Ctx, Ref, self(), UncompressedData),
+    ok = compress_impl(Ctx, Ref, self(), RawData),
     receive
         {ok, Ref, CompressedData} ->
             {ok, CompressedData};
@@ -68,6 +68,14 @@ esnappy_test() ->
     {ok, Data} = file:read_file("../test/text.txt"),
     {ok, CompressedData} = compress(Ctx, Data),
     {ok, UncompressedData} = decompress(Ctx, CompressedData),
-    true = (Data =:= UncompressedData).
+    true = (Data =:= UncompressedData andalso
+        size(CompressedData) < size(Data)).
+
+esnappy_iolist_test() ->
+    {ok, Ctx} = create_ctx(),
+    RawData = ["fshgggggggggggggggggg", <<"weqeqweqw">>],
+    {ok, CompressedData} = compress(Ctx, RawData),
+    {ok, UncompressedData} = decompress(Ctx, CompressedData),
+    true = (list_to_binary(RawData) =:= UncompressedData).
 
 -endif.
