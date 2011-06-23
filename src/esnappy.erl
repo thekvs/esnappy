@@ -63,19 +63,48 @@ decompress(Ctx, CompressedData) ->
 %% ===================================================================
 -ifdef(TEST).
 
-esnappy_test() ->
+all_test_() ->
+    {timeout, 120, [fun test_binary/0,
+                    fun test_iolist/0,
+                    fun test_zero_binary/0
+                   ]
+    }.
+
+test_binary() ->
     {ok, Ctx} = create_ctx(),
     {ok, Data} = file:read_file("../test/text.txt"),
-    {ok, CompressedData} = compress(Ctx, Data),
-    {ok, UncompressedData} = decompress(Ctx, CompressedData),
-    true = (Data =:= UncompressedData andalso
-        size(CompressedData) < size(Data)).
+    CompressResult = compress(Ctx, Data),
+    ?assertMatch({ok, _}, CompressResult),
+    {ok, CompressedData} = CompressResult,
+    DecompressResult = decompress(Ctx, CompressedData),
+    ?assertMatch({ok, _}, DecompressResult),
+    {ok, UncompressedData} = DecompressResult,
+    ?assertEqual(true, Data =:= UncompressedData),
+    CompressedDataSize = size(CompressedData),
+    DataSize = size(Data),
+    ?assertEqual(true, CompressedDataSize < DataSize),
+    ok.
 
-esnappy_iolist_test() ->
+test_iolist() ->
     {ok, Ctx} = create_ctx(),
     RawData = ["fshgggggggggggggggggg", <<"weqeqweqw">>],
-    {ok, CompressedData} = compress(Ctx, RawData),
-    {ok, UncompressedData} = decompress(Ctx, CompressedData),
-    true = (list_to_binary(RawData) =:= UncompressedData).
+    CompressResult = compress(Ctx, RawData),
+    ?assertMatch({ok, _}, CompressResult),
+    {ok, CompressedData} = CompressResult,
+    DecompressResult = decompress(Ctx, CompressedData),
+    ?assertMatch({ok, _}, DecompressResult),
+    {ok, UncompressedData} = DecompressResult,
+    ?assertEqual(true, list_to_binary(RawData) =:= UncompressedData),
+    ok.
+
+test_zero_binary() ->
+    {ok, Ctx} = create_ctx(),
+    RawData = <<>>,
+    CompressResult = compress(Ctx, RawData),
+    ?assertMatch({ok, _}, CompressResult),
+    {ok, CompressedData} = CompressResult,
+    DecompressResult = decompress(Ctx, CompressedData),
+    ?assertMatch({error, _}, DecompressResult),
+    ok.
 
 -endif.
