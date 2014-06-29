@@ -11,6 +11,8 @@ The **esnappy** library requires Erlang R14B or later.
 
 ## Building
 
+[![Build Status](https://travis-ci.org/thekvs/esnappy.svg?branch=master)](https://travis-ci.org/thekvs/esnappy)
+
 You have to have Snappy library installed on your system so that
 compiler can link against it. You can also specify **ESNAPPY_INCLUDE_DIR**
 and **ESNAPPY_LIB_DIR** enviroment variables for better control of
