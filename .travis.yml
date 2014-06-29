@@ -1,0 +1,9 @@
+language: erlang
+otp_release:
+  - 17.0
+  - R16B03-1
+  - R15B03
+  - R14B04
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libsnappy-dev
