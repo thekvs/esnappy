@@ -18,6 +18,7 @@ paths used to compile and link **esnappy** library.
 
 <pre>
 $ ESNAPPY_INCLUDE_DIR=/usr/local/include ESNAPPY_LIB_DIR=/usr/local/lib ./rebar compile
+$ ./rebar eunit
 </pre>
 
 ## Perfomance
