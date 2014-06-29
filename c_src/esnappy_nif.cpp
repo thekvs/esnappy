@@ -289,7 +289,7 @@ done:
 }
 
 void
-resource_dtor(ErlNifEnv *env, void *obj)
+resource_dtor(ErlNifEnv*, void *obj)
 {
     ctx_t  *ctx = static_cast<ctx_t*>(obj);
     task_t *task = init_empty_task(SHUTDOWN);
@@ -302,7 +302,7 @@ resource_dtor(ErlNifEnv *env, void *obj)
 }
 
 int
-load(ErlNifEnv *env, void **priv, ERL_NIF_TERM load_info)
+load(ErlNifEnv *env, void **, ERL_NIF_TERM)
 {
     const char *mod = "erlang-snappy";
     const char *name = "nif_resource";
@@ -322,7 +322,7 @@ load(ErlNifEnv *env, void **priv, ERL_NIF_TERM load_info)
 }
 
 ERL_NIF_TERM
-snappy_create_ctx(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
+snappy_create_ctx(ErlNifEnv *env, int, const ERL_NIF_TERM[])
 {
     ERL_NIF_TERM  rv;
     ctx_t        *ctx;
